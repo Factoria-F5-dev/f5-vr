@@ -26,18 +26,18 @@ AFRAME.registerComponent("collider-check", {
     //-- grip button pressed
     this.el.addEventListener("gripdown", function (e) {
       this.grip = true;
-      debugtxt.setAttribute("value", "Botón agarre presionado");
+      debugtxt.setAttribute("value", "Agarre presionado");
     });
 
     //-- grip button released
     this.el.addEventListener("gripup", function (e) {
       this.grip = false;
-      debugtxt.setAttribute("value", "Botón agarre liberado");
+      debugtxt.setAttribute("value", "Agarre liberado");
     });
 
     //-- trigger button pressed
     this.el.addEventListener("triggerdown", function (e) {
-      debugtxt.setAttribute("value", "Botón gatillo presionado");
+      debugtxt.setAttribute("value", "Gatillo presionado");
 
       if (!this.selectedObj) return;
 
