@@ -205,25 +205,30 @@
 
       <a-entity environment="preset: goldmine"></a-entity>
 
-      <a-entity id="cameraRig">
-        <a-entity camera position="0 1.7 0">
-          <a-text
-            value="Apila los cubos uno sobre otro"
-            position="-1 0 -3"
-          ></a-text>
+      <a-entity id="cameraRig" position="0 1.6 0">
+        <a-camera wasd-controls-enabled="false"></a-camera>
+
+        <a-entity
+          id="leftHand"
+          laser-controls="hand: left"
+          raycaster="objects: .collidable"
+          line="color: red; opacity: 0.5"
+          collider-check
+          thumbstick-move
+          grab
+        >
         </a-entity>
+
         <a-entity
-          oculus-touch-controls="hand: left"
-          thumbstick-logging
+          id="rightHand"
+          laser-controls="hand: right"
+          raycaster="objects: .collidable"
+          line="color: red; opacity: 0.5"
           collider-check
-          raycaster="objects: .collidable; showLine: true"
-        ></a-entity>
-        <a-entity
-          oculus-touch-controls="hand: right"
-          thumbstick-logging
-          collider-check
-          raycaster="objects: .collidable; showLine: true"
-        ></a-entity>
+          thumbstick-move
+          grab
+        >
+        </a-entity>
       </a-entity>
     </a-scene>
   </body>
