@@ -12,18 +12,16 @@ AFRAME.registerComponent("collider-check", {
     console.log("ok collider check");
     var debugtxt = document.querySelector("a-text");
 
-    this.el.addEventListener("raycaster-intersection", (e) => {
+    this.el.addEventListener("raycaster-intersection", function (e) {
+      //-- get selected object
       this.selectedObj = e.detail.els[0];
-      this.selectedObj.setAttribute("color", "#00FF00");
+      //debugtxt.setAttribute("value", "Player hit something!");
     });
 
-    this.el.addEventListener("raycaster-intersection-cleared", () => {
-      if (this.selectedObj) {
-        this.selectedObj.setAttribute("color", "#FF4700");
-        this.selectedObj = null;
-      }
+    this.el.addEventListener("raycaster-intersection-cleared", function (e) {
+      //-- get selected object
+      this.selectedObj = null;
     });
-
     //-- grip button pressed
     this.el.addEventListener("gripdown", function (e) {
       this.grip = true;

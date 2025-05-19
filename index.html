@@ -5,6 +5,26 @@
     <script src="https://unpkg.com/aframe-environment-component@1.3.0/dist/aframe-environment-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
     <script>
+      AFRAME.registerComponent("timer", {
+        init: function () {
+          this.seconds = 0;
+          this.timerText = this.el.querySelector("[text]");
+
+          // Iniciar el timer cuando la escena esté lista
+          this.el.sceneEl.addEventListener("loaded", () => {
+            this.timerInterval = setInterval(() => {
+              this.seconds++;
+              this.timerText.setAttribute("value", `Tiempo: ${this.seconds}s`);
+            }, 1000);
+          });
+        },
+        remove: function () {
+          if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+          }
+        },
+      });
+
       AFRAME.registerComponent("reset-button", {
         init: function () {
           this.el.addEventListener("click", () => {
@@ -22,9 +42,19 @@
         <img id="logo" src="logo.png" crossorigin="anonymous" />
       </a-assets>
 
+      <!-- Timer Display -->
+      <a-entity position="6 5 -5" rotation="0 0 0" timer>
+        <a-text
+          value="Tiempo: 0s"
+          align="center"
+          color="#FFFFFF"
+          scale="1 1 1"
+        ></a-text>
+      </a-entity>
+
       <!-- Reset Button -->
       <a-plane
-        position="7 5 -5"
+        position="8 5 -5"
         rotation="0 0 0"
         width="1"
         height="0.5"
@@ -33,13 +63,13 @@
         static-body
         class="clickable"
       >
-        <a-text
+        <!--a-text
           value="Reiniciar"
           align="center"
           position="0 0 0.01"
           color="#FFFFFF"
           scale="1 1 1"
-        ></a-text>
+        ></a-text-->
       </a-plane>
 
       <a-box
