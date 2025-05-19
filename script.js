@@ -86,11 +86,11 @@ AFRAME.registerComponent("thumbstick-logging", {
       cameraRig.object3D.translateZ(-0.05);
     }
     if (evt.detail.x < -0.95) {
-      debugtxt.setAttribute("value", "LEFT");
+      //debugtxt.setAttribute("value", "LEFT");
       cameraRig.object3D.rotateY(THREE.Math.degToRad(5));
     }
     if (evt.detail.x > 0.95) {
-      debugtxt.setAttribute("value", "RIGHT");
+      //debugtxt.setAttribute("value", "RIGHT");
       cameraRig.object3D.rotateY(THREE.Math.degToRad(-5));
     }
   },
@@ -116,10 +116,10 @@ AFRAME.registerComponent("timer", {
   },
 });
 
-AFRAME.registerComponent("reset-button", {
+/*AFRAME.registerComponent("reset-button", {
   init: function () {
     this.el.addEventListener("click", () => {
       window.location.reload();
     });
   },
-});
+});*/
