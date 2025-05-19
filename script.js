@@ -12,16 +12,16 @@ AFRAME.registerComponent("collider-check", {
     console.log("ok collider check");
     var debugtxt = document.querySelector("a-text");
 
-    this.el.addEventListener("raycaster-intersection", function (e) {
-      //-- get selected object
+    this.el.addEventListener("raycaster-intersection", (e) => {
       this.selectedObj = e.detail.els[0];
       this.selectedObj.setAttribute("color", "#00FF00");
-      //debugtxt.setAttribute("value", "Tocaste un objeto!");
     });
 
-    this.el.addEventListener("raycaster-intersection-cleared", function (e) {
-      //-- get selected object
-      this.selectedObj = null;
+    this.el.addEventListener("raycaster-intersection-cleared", (e) => {
+      if (this.selectedObj) {
+        this.selectedObj.setAttribute("color", "#FF0000");
+        this.selectedObj = null;
+      }
     });
 
     //-- grip button pressed
