@@ -8,6 +8,7 @@
       AFRAME.registerComponent("reset-button", {
         init: function () {
           this.el.addEventListener("click", function () {
+            console.log("Reset button clicked");
             window.location.reload();
           });
         },
@@ -30,6 +31,7 @@
         height="0.5"
         color="#FF0000"
         reset-button
+        static-body
         class="clickable"
       >
         <a-text
@@ -246,7 +248,7 @@
       <a-entity id="cameraRig">
         <a-entity camera position="0 1.7 0">
           <a-text
-            value="Apila los 5 cubos F5 y desaparece los demás"
+            value="Apila los cubos F5 y desaparece los demás"
             position="-1 0 -3"
           ></a-text>
         </a-entity>
