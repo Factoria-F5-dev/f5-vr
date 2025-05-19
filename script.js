@@ -1,64 +1,98 @@
+AFRAME.registerComponent("log", {
+  init: function () {
+    var debugtxt = document.querySelector("a-text");
+    debugtxt.setAttribute("value", "goodnite");
+  },
+});
+
 AFRAME.registerComponent("collider-check", {
+  dependencies: ["raycaster"],
+
   init: function () {
-    this.el.addEventListener("raycaster-intersection", (e) => {
-      this.el.selectedObj = e.detail.els[0];
-      this.el.selectedObj.setAttribute("color", "#00FF00"); // cambia a verde al seleccionar
+    console.log("ok collider check");
+    var debugtxt = document.querySelector("a-text");
+
+    this.el.addEventListener("raycaster-intersection", function (e) {
+      //-- get selected object
+      this.selectedObj = e.detail.els[0];
+      //debugtxt.setAttribute("value", "Tocaste un objeto!");
     });
 
-    this.el.addEventListener("raycaster-intersection-cleared", () => {
-      if (this.el.selectedObj) {
-        this.el.selectedObj.setAttribute("color", "red"); // vuelve al color original
-      }
-      this.el.selectedObj = null;
+    this.el.addEventListener("raycaster-intersection-cleared", function (e) {
+      //-- get selected object
+      this.selectedObj = null;
     });
-  },
-});
 
-AFRAME.registerComponent("thumbstick-move", {
-  init: function () {
-    this.speed = 0.1;
-    this.direction = new THREE.Vector3();
-
-    this.el.addEventListener("thumbstickmoved", (e) => {
-      this.direction.set(e.detail.x, 0, -e.detail.y);
-      this.direction.multiplyScalar(this.speed);
-      this.el.object3D.position.add(this.direction);
-    });
-  },
-});
-
-AFRAME.registerComponent("grab", {
-  schema: { default: "" },
-  init: function () {
-    this.grip = false;
-
-    this.el.addEventListener("gripdown", () => {
+    //-- grip button pressed
+    this.el.addEventListener("gripdown", function (e) {
       this.grip = true;
+      debugtxt.setAttribute("value", "Agarre presionado");
     });
 
-    this.el.addEventListener("gripup", () => {
+    //-- grip button released
+    this.el.addEventListener("gripup", function (e) {
       this.grip = false;
+      debugtxt.setAttribute("value", "Agarre liberado");
     });
 
-    this.el.addEventListener("triggerdown", () => {
-      if (this.el.selectedObj) {
-        this.el.sceneEl.removeChild(this.el.selectedObj);
-        this.el.selectedObj = null;
-      }
+    //-- trigger button pressed
+    this.el.addEventListener("triggerdown", function (e) {
+      debugtxt.setAttribute("value", "Gatillo presionado");
+
+      if (!this.selectedObj) return;
+
+      debugtxt.setAttribute("value", this.selectedObj.id);
+      this.selectedObj.parentNode.removeChild(this.selectedObj);
     });
   },
+
   tick: function () {
-    if (this.grip && this.el.selectedObj) {
-      let obj = this.el.selectedObj.object3D;
-      let controller = this.el.object3D;
+    if (!this.el.selectedObj) return;
+    if (!this.el.grip) return;
 
-      let targetPosition = new THREE.Vector3();
-      controller.getWorldDirection(targetPosition);
-      targetPosition.multiplyScalar(0.5); // distancia del objeto frente al controlador
-      targetPosition.add(controller.getWorldPosition(new THREE.Vector3()));
+    var raycast = this.el.getAttribute("raycaster").direction;
 
-      obj.position.lerp(targetPosition, 0.2); // movimiento suave
-      obj.rotation.copy(controller.rotation);
+    var pos = new THREE.Vector3(raycast.x, raycast.y, raycast.z);
+    pos.normalize();
+
+    //-- final destination of object will be 2m in front of ray
+    pos.multiplyScalar(3);
+
+    //-- convert to world coordinate
+    this.el.object3D.localToWorld(pos);
+
+    //Move selected object to follow the tip of raycaster.
+    this.el.selectedObj.object3D.position.set(pos.x, pos.y, pos.z);
+
+    if (this.el.selectedObj.components["dynamic-body"]) {
+      this.el.selectedObj.components["dynamic-body"].syncToPhysics();
+    }
+  },
+});
+
+AFRAME.registerComponent("thumbstick-logging", {
+  init: function () {
+    this.el.addEventListener("thumbstickmoved", this.logThumbstick);
+  },
+  logThumbstick: function (evt) {
+    var debugtxt = document.querySelector("a-text");
+    var cameraRig = document.querySelector("#cameraRig");
+
+    if (evt.detail.y > 0.95) {
+      debugtxt.setAttribute("value", "DOWN");
+      cameraRig.object3D.translateZ(0.05);
+    }
+    if (evt.detail.y < -0.95) {
+      debugtxt.setAttribute("value", "UP");
+      cameraRig.object3D.translateZ(-0.05);
+    }
+    if (evt.detail.x < -0.95) {
+      debugtxt.setAttribute("value", "LEFT");
+      cameraRig.object3D.rotateY(THREE.Math.degToRad(5));
+    }
+    if (evt.detail.x > 0.95) {
+      debugtxt.setAttribute("value", "RIGHT");
+      cameraRig.object3D.rotateY(THREE.Math.degToRad(-5));
     }
   },
 });
