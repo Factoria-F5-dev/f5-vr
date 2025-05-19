@@ -17,7 +17,7 @@ AFRAME.registerComponent("collider-check", {
       this.selectedObj.setAttribute("color", "#00FF00");
     });
 
-    this.el.addEventListener("raycaster-intersection-cleared", (e) => {
+    this.el.addEventListener("raycaster-intersection-cleared", () => {
       if (this.selectedObj) {
         this.selectedObj.setAttribute("color", "#FF0000");
         this.selectedObj = null;
