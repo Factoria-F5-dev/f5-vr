@@ -8,7 +8,7 @@
       AFRAME.registerComponent("reset-button", {
         init: function () {
           this.el.addEventListener("click", () => {
-            location.reload();
+            window.location.reload();
           });
         },
       });
@@ -248,7 +248,7 @@
         <a-entity camera position="0 1.7 0">
           <a-text
             value="Apila los cubos F5 y desaparece los otros"
-            position="-1 0 -3"
+            position="-1.5 2 -5"
           ></a-text>
         </a-entity>
         <a-entity

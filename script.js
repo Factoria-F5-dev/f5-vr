@@ -15,6 +15,7 @@ AFRAME.registerComponent("collider-check", {
     this.el.addEventListener("raycaster-intersection", function (e) {
       //-- get selected object
       this.selectedObj = e.detail.els[0];
+      this.selectedObj.setAttribute("color", "#00FF00");
       //debugtxt.setAttribute("value", "Tocaste un objeto!");
     });
 
