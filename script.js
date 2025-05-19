@@ -19,7 +19,7 @@ AFRAME.registerComponent("collider-check", {
 
     this.el.addEventListener("raycaster-intersection-cleared", () => {
       if (this.selectedObj) {
-        this.selectedObj.setAttribute("color", "#FF0000");
+        this.selectedObj.setAttribute("color", "#FF4700");
         this.selectedObj = null;
       }
     });
