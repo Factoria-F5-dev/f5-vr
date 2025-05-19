@@ -4,30 +4,66 @@
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.3.0/dist/aframe-environment-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+    <script>
+      AFRAME.registerComponent("reset-button", {
+        init: function () {
+          this.el.addEventListener("click", function () {
+            window.location.reload();
+          });
+        },
+      });
+    </script>
     <script src="script.js"></script>
   </head>
   <body>
     <a-scene physics="gravity: -9">
+      <!-- Assets section for loading textures -->
+      <a-assets>
+        <img id="logo" src="logo.png" crossorigin="anonymous" />
+      </a-assets>
+
+      <!-- Reset Button -->
+      <a-plane
+        position="7 5 -5"
+        rotation="0 0 0"
+        width="1"
+        height="0.5"
+        color="#FF0000"
+        reset-button
+        class="clickable"
+      >
+        <a-text
+          value="Reiniciar"
+          align="center"
+          position="0 0 0.01"
+          color="#FFFFFF"
+          scale="1 1 1"
+        ></a-text>
+      </a-plane>
+
       <a-box
         position="-1 0.5 -3"
         rotation="0 45 0"
-        color="#FF4700"
+        color="#FFF"
         dynamic-body="shape: box; mass: 1"
         class="collidable"
+        material="src: #logo; repeat: 1 1"
       ></a-box>
       <a-box
         position="-3 6 -8"
         rotation="0 45 0"
-        color="#FF4700"
+        color="#FFF"
         dynamic-body="shape: box; mass: 1"
         class="collidable"
+        material="src: #logo; repeat: 1 1"
       ></a-box>
       <a-box
         position="-1 2 -6"
         rotation="0 45 0"
-        color="#FF4700"
+        color="#FFF"
         dynamic-body="shape: box; mass: 1"
         class="collidable"
+        material="src: #logo; repeat: 1 1"
       ></a-box>
       <a-box
         position="-3 10 -5"
@@ -159,9 +195,10 @@
       <a-box
         position="-5 18 -4"
         rotation="0 45 0"
-        color="#FF4700"
+        color="#FFF"
         dynamic-body="shape: box; mass: 1"
         class="collidable"
+        material="src: #logo; repeat: 1 1"
       ></a-box>
       <a-box
         position="4 19 -7"
@@ -173,9 +210,10 @@
       <a-box
         position="-3 20 -5"
         rotation="0 45 0"
-        color="#FF4700"
+        color="#FFF"
         dynamic-body="shape: box; mass: 1"
         class="collidable"
+        material="src: #logo; repeat: 1 1"
       ></a-box>
 
       <a-sphere
@@ -208,7 +246,7 @@
       <a-entity id="cameraRig">
         <a-entity camera position="0 1.7 0">
           <a-text
-            value="Apila los cubos uno sobre otro"
+            value="Apila los 5 cubos F5 y desaparece los demás"
             position="-1 0 -3"
           ></a-text>
         </a-entity>
@@ -216,13 +254,13 @@
           oculus-touch-controls="hand: left"
           thumbstick-logging
           collider-check
-          raycaster="objects: .collidable; showLine: true"
+          raycaster="objects: .collidable, .clickable; showLine: true"
         ></a-entity>
         <a-entity
           oculus-touch-controls="hand: right"
           thumbstick-logging
           collider-check
-          raycaster="objects: .collidable; showLine: true"
+          raycaster="objects: .collidable, .clickable; showLine: true"
         ></a-entity>
       </a-entity>
     </a-scene>
