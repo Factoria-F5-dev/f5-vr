@@ -95,3 +95,31 @@ AFRAME.registerComponent("thumbstick-logging", {
     }
   },
 });
+
+AFRAME.registerComponent("timer", {
+  init: function () {
+    this.seconds = 0;
+    this.timerText = this.el.querySelector("[text]");
+
+    // Iniciar el timer cuando la escena esté lista
+    this.el.sceneEl.addEventListener("loaded", () => {
+      this.timerInterval = setInterval(() => {
+        this.seconds++;
+        this.timerText.setAttribute("value", `Tiempo: ${this.seconds}s`);
+      }, 1000);
+    });
+  },
+  remove: function () {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+  },
+});
+
+AFRAME.registerComponent("reset-button", {
+  init: function () {
+    this.el.addEventListener("click", () => {
+      window.location.reload();
+    });
+  },
+});
